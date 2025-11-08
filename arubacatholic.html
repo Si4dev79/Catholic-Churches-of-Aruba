@@ -20,15 +20,18 @@
     html,body{margin:0;padding:0;height:100%;font-family:Lato,system-ui;color:var(--text);}
     a{color:inherit;text-decoration:none;}
 
-    /* Parallax background setup */
+    /* Fixed parallax background setup */
+    body {
+      position: relative;
+      min-height: 100vh;
+    }
     body::before {
       content:"";
       position:fixed;
       top:0;left:0;width:100%;height:100%;
-      background:url('https://upload.wikimedia.org/wikipedia/commons/f/f9/Alto_Vista_Chapel_Aruba.jpg') center/cover no-repeat;
-      transform:translateY(0);
+      background:url('https://upload.wikimedia.org/wikipedia/commons/f/f9/Alto_Vista_Chapel_Aruba.jpg') center/cover no-repeat fixed;
       z-index:-2;
-      transition:transform 0.1s linear;
+      will-change: transform;
     }
     body::after {
       content:"";
@@ -36,7 +39,6 @@
       top:0;left:0;width:100%;height:100%;
       background:linear-gradient(to bottom,var(--overlay) 20%,rgba(0,0,0,0.9));
       z-index:-1;
-      transition:opacity 0.2s ease;
     }
 
     .container{max-width:1100px;margin:auto;padding:24px;}
@@ -85,7 +87,7 @@
       background:rgba(0,0,0,.4);
       color:var(--text);
       padding:8px 12px;border-radius:12px;font-weight:700;font-size:.9rem;
-      transition:background .15s ease;
+      transition:background .15s ease;cursor:pointer;
     }
     .btn.ok{border-color:rgba(16,185,129,.6);}
     .btn:hover{background:rgba(255,255,255,.08);}
@@ -127,17 +129,6 @@
   </div>
 
   <script>
-    // Simple parallax scroll effect
-    window.addEventListener('scroll',()=>{
-      const scrolled = window.scrollY;
-      document.body.style.setProperty('--scroll', scrolled);
-      document.body.style.setProperty('--overlay', `rgba(11,18,32,${0.78 + Math.min(scrolled/1000,0.15)})`);
-      document.body.beforeEl = document.body.beforeEl || document.querySelector('body::before');
-      document.body.style.setProperty('--scrollY', scrolled * 0.3);
-      document.body.style.backgroundPositionY = `${scrolled * 0.2}px`;
-      document.body.style.backgroundAttachment='fixed';
-    });
-
     const CHURCHES=[
       {name:"Alto Vista Chapel",area:"Noord",address:"Alto Vista Noord",
        updates:"https://diocesewillemstad.com/parishes/",
@@ -145,7 +136,7 @@
       {name:"San Francisco di Asis (Pro-Cathedral)",area:"Oranjestad",address:"J. Irausquinplein 3, Oranjestad",
        updates:"https://diocesewillemstad.com/parishes/",
        map:"https://www.google.com/maps/search/?api=1&query=Pro-Cathedral+of+St+Francis+Oranjestad+Aruba"},
-      {name:"Santa Ana (St. Ann’s)",area:"Noord",address:"Caya Frans Figaroa 16, Noord",
+      {name:"Santa Ana (St. Ann's)",area:"Noord",address:"Caya Frans Figaroa 16, Noord",
        updates:"https://diocesewillemstad.com/parishes/",
        map:"https://www.google.com/maps/search/?api=1&query=St+Ann%27s+Church+Noord+Aruba"},
       {name:"Santa Cruz – Inmaculada Concepción",area:"Santa Cruz",address:"Santa Cruz 41, Santa Cruz",
@@ -154,11 +145,13 @@
     ];
 
     const grid=document.getElementById('grid');
-    const q=document.getElementById('q');const region=document.getElementById('region');
+    const q=document.getElementById('q');
+    const region=document.getElementById('region');
     document.getElementById('yr').textContent=new Date().getFullYear();
 
     function esc(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
     function link(label,href){return `<a class="btn" href="${href}" target="_blank" rel="noopener">${label}</a>`}
+    
     function render(list){
       grid.innerHTML='';
       for(const c of list){
@@ -174,15 +167,20 @@
         grid.appendChild(el);
       }
     }
+    
     function filter(){
-      const t=q.value.toLowerCase();const r=region.value;
+      const t=q.value.toLowerCase();
+      const r=region.value;
       const out=CHURCHES.filter(c=>{
         const text=(c.name+' '+c.area+' '+c.address).toLowerCase();
         return(!t||text.includes(t))&&(!r||c.area===r);
       });
       render(out);
     }
-    q.addEventListener('input',filter);region.addEventListener('change',filter);render(CHURCHES);
+    
+    q.addEventListener('input',filter);
+    region.addEventListener('change',filter);
+    render(CHURCHES);
   </script>
 </body>
 </html>
