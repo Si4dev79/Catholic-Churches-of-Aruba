@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Catholic Churches of Aruba</title>
+  <meta name="description" content="Find Catholic churches in Aruba — maps, official links, and recent updates in one place." />
+
+  <!-- Elegant fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --overlay: rgba(11,18,32,0.78);
+      --card:#111827; --muted:#aeb3c3; --text:#eef2ff;
+      --accent:#eab308; --ok:#10b981; --ring:#6366f1;
+      --radius:18px; --shadow:0 8px 28px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box;}
+    html,body{margin:0;padding:0;height:100%;font-family:Lato,system-ui;color:var(--text);}
+    a{color:inherit;text-decoration:none;}
+
+    /* Parallax background setup */
+    body::before {
+      content:"";
+      position:fixed;
+      top:0;left:0;width:100%;height:100%;
+      background:url('https://upload.wikimedia.org/wikipedia/commons/f/f9/Alto_Vista_Chapel_Aruba.jpg') center/cover no-repeat;
+      transform:translateY(0);
+      z-index:-2;
+      transition:transform 0.1s linear;
+    }
+    body::after {
+      content:"";
+      position:fixed;
+      top:0;left:0;width:100%;height:100%;
+      background:linear-gradient(to bottom,var(--overlay) 20%,rgba(0,0,0,0.9));
+      z-index:-1;
+      transition:opacity 0.2s ease;
+    }
+
+    .container{max-width:1100px;margin:auto;padding:24px;}
+    header{
+      background:rgba(0,0,0,.55);
+      backdrop-filter:blur(6px);
+      border-radius:20px;
+      padding:24px;
+      box-shadow:var(--shadow);
+      border:1px solid rgba(255,255,255,.1);
+    }
+    .brand{display:flex;align-items:center;gap:12px;}
+    .logo{width:44px;height:44px;border-radius:12px;
+          background:conic-gradient(from 200deg,#f59e0b,#fde68a,#f59e0b);}
+    h1{font-family:"Playfair Display",serif;font-weight:700;margin:0;font-size:clamp(1.5rem,3vw,2rem);}
+    .subtitle{color:var(--muted);margin-top:4px;}
+    .hero{margin-top:16px;}
+    .controls{display:grid;grid-template-columns:1fr 200px;gap:10px;margin-top:12px;}
+    .input,.select{
+      background:rgba(255,255,255,.08);
+      color:var(--text);
+      border:1px solid rgba(255,255,255,.2);
+      padding:12px;border-radius:12px;outline:none;
+    }
+    .input:focus,.select:focus{border-color:var(--ring);box-shadow:0 0 0 3px rgba(99,102,241,.3);}
+    .ticker{
+      margin-top:12px;background:rgba(0,0,0,.45);
+      border:1px solid rgba(255,255,255,.1);
+      border-radius:12px;padding:10px 12px;
+      color:var(--muted);font-size:.95rem;overflow:hidden;white-space:nowrap;
+    }
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-top:22px;}
+    .card{
+      background:rgba(15,23,42,.88);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:var(--radius);
+      padding:16px;
+      box-shadow:var(--shadow);
+      transition:transform .12s ease,border-color .12s ease;
+    }
+    .card:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.25);}
+    .badge{color:var(--muted);font-size:.9rem;margin-top:2px;}
+    .btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;}
+    .btn{
+      border:1px solid rgba(255,255,255,.25);
+      background:rgba(0,0,0,.4);
+      color:var(--text);
+      padding:8px 12px;border-radius:12px;font-weight:700;font-size:.9rem;
+      transition:background .15s ease;
+    }
+    .btn.ok{border-color:rgba(16,185,129,.6);}
+    .btn:hover{background:rgba(255,255,255,.08);}
+    footer{text-align:center;color:var(--muted);margin:26px 0 10px;font-size:.9rem;}
+    @media(max-width:640px){.controls{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo"></div>
+        <div>
+          <h1>Catholic Churches of Aruba</h1>
+          <div class="subtitle">Find your parish, maps, and latest updates — all in one place.</div>
+        </div>
+      </div>
+
+      <div class="hero">
+        <div class="controls">
+          <input id="q" class="input" type="search" placeholder="Search (e.g., Santa Cruz, Oranjestad, St. Francis)…" />
+          <select id="region" class="select">
+            <option value="">All regions</option>
+            <option>Brasil</option><option>Dakota</option><option>Madiki</option>
+            <option>Noord</option><option>Oranjestad</option><option>Paradera</option>
+            <option>Pos Chikito</option><option>San Nicolaas</option><option>Santa Cruz</option>
+            <option>Savaneta</option><option>Tanki Leendert</option>
+          </select>
+        </div>
+        <div id="ticker" class="ticker">
+          🕊 Latest: St. Francis Pro-Cathedral – Advent schedule posted • Santa Ana – Choir signup open • Santa Cruz – Youth retreat 11/20
+        </div>
+      </div>
+    </header>
+
+    <section id="grid" class="grid"></section>
+
+    <footer>© <span id="yr"></span> Aruba Catholic Links • External links verified</footer>
+  </div>
+
+  <script>
+    // Simple parallax scroll effect
+    window.addEventListener('scroll',()=>{
+      const scrolled = window.scrollY;
+      document.body.style.setProperty('--scroll', scrolled);
+      document.body.style.setProperty('--overlay', `rgba(11,18,32,${0.78 + Math.min(scrolled/1000,0.15)})`);
+      document.body.beforeEl = document.body.beforeEl || document.querySelector('body::before');
+      document.body.style.setProperty('--scrollY', scrolled * 0.3);
+      document.body.style.backgroundPositionY = `${scrolled * 0.2}px`;
+      document.body.style.backgroundAttachment='fixed';
+    });
+
+    const CHURCHES=[
+      {name:"Alto Vista Chapel",area:"Noord",address:"Alto Vista Noord",
+       updates:"https://diocesewillemstad.com/parishes/",
+       map:"https://www.google.com/maps/search/?api=1&query=Alto+Vista+Chapel+Aruba"},
+      {name:"San Francisco di Asis (Pro-Cathedral)",area:"Oranjestad",address:"J. Irausquinplein 3, Oranjestad",
+       updates:"https://diocesewillemstad.com/parishes/",
+       map:"https://www.google.com/maps/search/?api=1&query=Pro-Cathedral+of+St+Francis+Oranjestad+Aruba"},
+      {name:"Santa Ana (St. Ann’s)",area:"Noord",address:"Caya Frans Figaroa 16, Noord",
+       updates:"https://diocesewillemstad.com/parishes/",
+       map:"https://www.google.com/maps/search/?api=1&query=St+Ann%27s+Church+Noord+Aruba"},
+      {name:"Santa Cruz – Inmaculada Concepción",area:"Santa Cruz",address:"Santa Cruz 41, Santa Cruz",
+       updates:"https://diocesewillemstad.com/parishes/",
+       map:"https://www.google.com/maps/search/?api=1&query=Inmaculada+Concepcion+Santa+Cruz+Aruba"}
+    ];
+
+    const grid=document.getElementById('grid');
+    const q=document.getElementById('q');const region=document.getElementById('region');
+    document.getElementById('yr').textContent=new Date().getFullYear();
+
+    function esc(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+    function link(label,href){return `<a class="btn" href="${href}" target="_blank" rel="noopener">${label}</a>`}
+    function render(list){
+      grid.innerHTML='';
+      for(const c of list){
+        const el=document.createElement('div');
+        el.className='card';
+        el.innerHTML=`
+          <div style="font-weight:700;font-size:1.05rem">${esc(c.name)}</div>
+          <div class="badge">📍 ${esc(c.area)} · ${esc(c.address)}</div>
+          <div class="btns">
+            ${c.updates?link('Updates',c.updates):''}
+            ${c.map?link('Map',c.map):''}
+          </div>`;
+        grid.appendChild(el);
+      }
+    }
+    function filter(){
+      const t=q.value.toLowerCase();const r=region.value;
+      const out=CHURCHES.filter(c=>{
+        const text=(c.name+' '+c.area+' '+c.address).toLowerCase();
+        return(!t||text.includes(t))&&(!r||c.area===r);
+      });
+      render(out);
+    }
+    q.addEventListener('input',filter);region.addEventListener('change',filter);render(CHURCHES);
+  </script>
+</body>
+</html>
