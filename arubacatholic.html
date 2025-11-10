@@ -1,125 +1,83 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Catholic Churches of Aruba</title>
-<meta name="description" content="Directory of Catholic churches in Aruba with maps and verified updates.">
-<style>
-:root{
- --bg:#0b1220;--panel:#0f1628;--card:#10192e;--line:#1e2a42;
- --text:#e6ebf5;--muted:#9aa7bf;--accent:#f5b041;--ring:#5b8def;
- --shadow:0 8px 25px rgba(0,0,0,.35)
-}
-*{box-sizing:border-box}
-body{margin:0;background:radial-gradient(1200px 600px at 10% -10%,#121a2f 0,transparent 60%) fixed,
-radial-gradient(1000px 500px at 120% 10%,#151f37 0,transparent 50%) fixed,var(--bg);
-color:var(--text);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto}
-header{border-bottom:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,0) 70%);
-padding:20px;text-align:center}
-header h1{margin:0;font-size:1.6rem;color:var(--accent)}
-header p{margin:4px 0 0;color:var(--muted)}
-.controls{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;
-margin:24px auto 10px;max-width:600px;padding:14px;background:var(--panel);
-border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow)}
-input,select{background:var(--card);color:var(--text);border:1px solid var(--line);
-border-radius:10px;padding:10px 12px;font-size:1rem;min-width:180px}
-input:focus,select:focus{border-color:var(--ring);outline:none;box-shadow:0 0 0 2px rgba(91,141,239,.35)}
-.note{text-align:center;color:var(--muted);margin-bottom:10px}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
-gap:14px;max-width:1100px;margin:0 auto;padding:0 20px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:16px;
-padding:14px;transition:.15s;box-shadow:0 0 0 rgba(0,0,0,0)}
-.card:hover{transform:translateY(-2px);border-color:#2b3b5e;box-shadow:var(--shadow)}
-.title{font-weight:700;font-size:1.05rem}
-.meta{color:var(--muted);font-size:.9rem;margin-bottom:6px}
-.btns{display:flex;flex-wrap:wrap;gap:8px}
-a.btn{border:1px solid var(--line);background:#0b1220;color:var(--text);
-padding:7px 10px;border-radius:10px;font-weight:600;font-size:.9rem;text-decoration:none}
-a.btn:hover{background:#0f1628;border-color:#2b3b5e}
-.empty{text-align:center;color:var(--muted);margin:10px 0}
-.updates{max-width:700px;margin:40px auto;padding:0 20px}
-.updates h2{color:var(--accent);margin-bottom:10px;text-align:center}
-.updates-item{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px;margin:8px 0}
-footer{border-top:1px solid var(--line);text-align:center;padding:16px;color:var(--muted);font-size:.9rem;margin-top:40px}
-@media(max-width:700px){.controls{flex-direction:column;align-items:stretch}}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Catholic Churches of Aruba</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-<header>
-  <h1>Catholic Churches of Aruba</h1>
-  <p>Find your parish, maps & verified updates</p>
-</header>
+  <div class="hero-box">
+    <div class="hero-content">
+      <div class="brand">
+        <div class="brand-icon"></div>
+        <div class="brand-text">
+          <h1>Catholic Churches of Aruba</h1>
+          <p>Find your parish, maps, and latest updates — all in one place.</p>
+        </div>
+      </div>
 
-<section class="controls">
-  <input id="q" type="search" placeholder="Search by name or area…">
-  <select id="region">
-    <option value="">All regions</option>
-    <option>Oranjestad</option><option>Noord</option><option>Santa Cruz</option>
-    <option>Savaneta</option><option>San Nicolaas</option><option>Paradera</option>
-  </select>
-</section>
-<p class="note">External links are verified and limited to approved domains.</p>
+      <div class="filters">
+        <input type="search" placeholder="Search (e.g., Santa Cruz, Oranjestad, St. Francis)…" />
+        <select>
+          <option>All regions</option>
+          <option>Noord</option>
+          <option>Oranjestad</option>
+          <option>Santa Cruz</option>
+          <option>Savaneta</option>
+          <option>San Nicolaas</option>
+          <option>Paradera</option>
+        </select>
+      </div>
 
-<div id="grid" class="grid"></div>
-<p id="empty" class="empty" hidden>No results found.</p>
+      <div class="latest">
+        🕊️ Latest: St. Francis Pro-Cathedral – Advent schedule posted • Santa Ana – Choir signup open • Santa Cruz – Youth retreat 11/20
+      </div>
+    </div>
+  </div>
 
-<section class="updates" id="updates">
-  <h2>Latest Updates</h2>
-  <div id="updates-list"></div>
-</section>
+  <main class="church-grid">
+    <div class="church-card">
+      <h2>Alto Vista Chapel</h2>
+      <p>📍 Noord · Alto Vista Noord</p>
+      <div class="btns">
+        <a href="https://www.facebook.com/AltoVistaChapelAruba/" target="_blank" class="btn">Updates</a>
+        <a href="https://www.google.com/maps/search/Alto+Vista+Chapel+Aruba" target="_blank" class="btn">Map</a>
+      </div>
+    </div>
 
-<footer>© <span id="year"></span> Catholic Churches of Aruba • All rights reserved</footer>
+    <div class="church-card">
+      <h2>San Francisco di Asis (Pro-Cathedral)</h2>
+      <p>📍 Oranjestad · J. Irausquinplein 3, Oranjestad</p>
+      <div class="btns">
+        <a href="https://www.facebook.com/sanfranciscodeasismaruba/" target="_blank" class="btn">Updates</a>
+        <a href="https://www.google.com/maps/search/San+Francisco+di+Asis+Pro-Cathedral+Oranjestad+Aruba" target="_blank" class="btn">Map</a>
+      </div>
+    </div>
 
-<script>
-const CHURCHES=[
- {name:"San Francisco di Asis (Pro-Cathedral)",area:"Oranjestad",address:"J. Irausquinplein 3",map:"https://goo.gl/maps/qn9Yz7qK8apg5e6h8"},
- {name:"Santa Ana (St. Ann’s)",area:"Noord",address:"Caya Frans Figaroa 16",map:"https://goo.gl/maps/m68k8u3hnMdeTtCU7"},
- {name:"Inmaculada Concepción",area:"Santa Cruz",address:"Santa Cruz 41",map:"https://goo.gl/maps/HPu6jYqSgfrXwVAE8"},
- {name:"Sagrado Corazon di Hesus",area:"Savaneta",address:"Savaneta 338-D",map:"https://goo.gl/maps/YexyE5G8dkTDFbYX8"},
- {name:"Santa Filomena",area:"Paradera",address:"Paradera 51",map:"https://goo.gl/maps/xWnxGtw6ZctmPQJs6"},
- {name:"Santa Teresita di Niño Hesus",area:"San Nicolaas",address:"Theresiaplein 8",map:"https://goo.gl/maps/AGZb6mwAQTyUgMyo8"}
-];
-const UPDATES=[
- {title:"Parish retreat schedule posted",parish:"Santa Cruz",date:"Nov 6 2025"},
- {title:"Youth Mass livestream link",parish:"Noord",date:"Nov 2 2025"},
- {title:"Charity drive results",parish:"Oranjestad",date:"Oct 30 2025"}
-];
-const grid=document.getElementById("grid"),empty=document.getElementById("empty"),
- q=document.getElementById("q"),region=document.getElementById("region"),
- updates=document.getElementById("updates-list");
-document.getElementById("year").textContent=new Date().getFullYear();
-function render(list){
- grid.innerHTML="";
- if(!list.length){empty.hidden=false;return}
- empty.hidden=true;
- list.forEach(c=>{
-   const el=document.createElement("div");
-   el.className="card";
-   el.innerHTML=`<div class="title">${c.name}</div>
-     <div class="meta">${c.area} • ${c.address}</div>
-     <div class="btns"><a class="btn" target="_blank" href="${c.map}">Map ↗</a></div>`;
-   grid.appendChild(el);
- });
-}
-function filter(){
- const text=q.value.toLowerCase(),r=region.value;
- const out=CHURCHES.filter(c=>
-  (!text||c.name.toLowerCase().includes(text)||c.area.toLowerCase().includes(text))&&(!r||c.area===r));
- render(out);
-}
-function renderUpdates(){
- UPDATES.forEach(u=>{
-   const li=document.createElement("div");
-   li.className="updates-item";
-   li.innerHTML=`<b>${u.title}</b><br><span style="color:#9aa7bf">${u.parish} • ${u.date}</span>`;
-   updates.appendChild(li);
- });
-}
-q.addEventListener("input",filter);
-region.addEventListener("change",filter);
-render(CHURCHES);
-renderUpdates();
-</script>
+    <div class="church-card">
+      <h2>Santa Ana (St. Ann’s)</h2>
+      <p>📍 Noord · Caya Frans Figaroa 16, Noord</p>
+      <div class="btns">
+        <a href="https://www.facebook.com/SaintAnnasChurchAruba/" target="_blank" class="btn">Updates</a>
+        <a href="https://www.google.com/maps/search/Santa+Ana+Church+Noord+Aruba" target="_blank" class="btn">Map</a>
+      </div>
+    </div>
+
+    <div class="church-card">
+      <h2>Santa Cruz – Inmaculada Concepción</h2>
+      <p>📍 Santa Cruz · Santa Cruz 41, Santa Cruz</p>
+      <div class="btns">
+        <a href="https://www.facebook.com/ParokiaInmaculadaConcepcionAruba/" target="_blank" class="btn">Updates</a>
+        <a href="https://www.google.com/maps/search/Inmaculada+Concepcion+Santa+Cruz+Aruba" target="_blank" class="btn">Map</a>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    © 2025 Aruba Catholic Links • External links verified
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
